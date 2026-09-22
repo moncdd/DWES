@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Formulario base</h1>
-        <form action="06-RecogerDatos.php">
+        <form action="09-RecogerDatos.php">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre">
             <input type="submit" name="enviar" value="Enviar">
