@@ -4,7 +4,8 @@ $acceso = false;
 
 if(isset($_COOKIE["contrasenia"]) && $_COOKIE["contrasenia"] === "si")
 {
-    $acceso = true;
+    header("Location: 07-ContenidoWeb.php");
+    exit();
 }
 else if($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -27,9 +28,10 @@ else if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         if(isset($_POST["recordar"]) && $_POST["recordar"] == "on")
         {
-            setcookie("contrasenia","si",time()+3600);
+            setcookie("contrasenia","si",time()+3600);   
         }
-        $msg = "Usuario autenticado";
+        header("Location: 07-ContenidoWeb.php");
+        exit();
     }
     else
         $msg =  "Usuario desconocido";
@@ -42,13 +44,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST")
         <meta charset="utf-8">
     </head>
     <body>
-        <?php if(isset($acceso) && $acceso && isset($msg)): ?>
-        <p style="color: blue;"><?= $msg; ?></p>
-        <?php elseif(isset($acceso) && $acceso && !isset($msg)): ?>
-        <p style="color: blue;"><?= "Funciona la cookie" ?></p>
-        <?php elseif(isset($acceso) && !$acceso && isset($msg)): ?>
-        <p style="color: blue;"><?= $msg; ?></p>
-        <?php else: ?>        
+        <?php if(isset($acceso) && !$acceso && isset($msg)): ?>
+        <p style="color: red;"><?= $msg; ?></p>
+        <?php endif; ?>        
         <form action="<?=  $_SERVER["PHP_SELF"]; ?>" method="post">
             <fieldset>
                 <legend>Formulario de login</legend>
@@ -61,6 +59,5 @@ else if($_SERVER["REQUEST_METHOD"] == "POST")
                 <input type="submit" id="enviar" name="enviar" value="Enviar">
             </fieldset>
         </form>
-        <?php endif; ?>
     </body>
 </html>
