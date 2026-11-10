@@ -30,4 +30,5 @@ while ($row = mysqli_fetch_array($result,MYSQLI_BOTH)) {
     echo $row['usuario']."<br>";
 }
 
+mysqli_close($conn);
 ?>

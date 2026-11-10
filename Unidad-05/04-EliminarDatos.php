@@ -24,4 +24,6 @@ $result = mysqli_query($conn, $query);
 
 var_dump($result);
 
+mysqli_close($conn);
+
 ?>

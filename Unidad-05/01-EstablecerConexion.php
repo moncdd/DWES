@@ -20,4 +20,6 @@ if (!$conn) {
 }
 echo "Connected successfully.<br><br>";
 
+mysqli_close($conn);
+
 ?>
