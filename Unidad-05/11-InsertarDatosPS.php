@@ -48,6 +48,7 @@ $stmt->bind_param("sss", $usuario, $contrasenia, $rol);
 $stmt->execute();
 
 // 4. Destroy object
+$stmt->close();
 $mysqli->close();
 
 
