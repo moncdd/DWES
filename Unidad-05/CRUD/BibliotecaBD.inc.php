@@ -43,4 +43,19 @@ function insertarUsuario($p_suario,$p_contrasenia,$p_rol)
     cerrarConexion($stmt,$mysqli);
 }
 
+function consultarUsuarios()
+{
+    $mysqli = crearConexion();
+
+    // Insertamos una tupla en BD
+    $stmt = $mysqli->prepare("SELECT * FROM `usuarios`");
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    cerrarConexion($stmt,$mysqli);
+
+    return $result->fetch_all(MYSQLI_BOTH);
+}
 ?>
