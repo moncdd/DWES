@@ -62,6 +62,22 @@ function actualizarUsuario($p_id,$p_usuario,$p_contrasenia,$p_rol)
 
     cerrarConexion($stmt,$mysqli);
 }
+function eliminarUsuario($p_id)
+{
+    $mysqli = crearConexion();
+
+    // Consulta preparada, paso 1: preparación
+    $stmt = $mysqli->prepare("DELETE FROM `usuarios` WHERE `id` = ?");
+
+    // Consulta preparada, paso 2: enlaza los valores y ejecuta la consulta
+    $id = $p_id;
+    
+    $stmt->bind_param("i",$id);  
+
+    $stmt->execute();
+
+    cerrarConexion($stmt,$mysqli);
+}
 function consultarUsuarios($p_id="")
 {
     $mysqli = crearConexion();

@@ -48,6 +48,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["formInsertarUsuario"])
     {
         $id = $_POST["id"];
         actualizarUsuario($id,$usuario,$contrasenia,$rol);
+        header("Location:ConsultarUsuarios.php");
+        exit();
     }
     
 }// request_method

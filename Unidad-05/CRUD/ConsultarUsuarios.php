@@ -14,6 +14,7 @@ $tupla = consultarUsuarios();
         <title>Formulario de alta de usuarios</title>
     </head>
     <body>
+        <p><a href="FormularioInsertarUsuario.php">Insertar un nuevo usuario</a></p>
         <table style="border: 1px solid black;">
             <tr style="border: 1px solid black;">
                 <th style="border: 1px solid black;">Usuario</th>
@@ -32,7 +33,7 @@ $tupla = consultarUsuarios();
                         <td style=\"border: 1px solid black;\"><a href=\"FormularioActualizarUsuario.php?id=".$row["id"]."\">Modificar</a></td>
                         <form action=\"EliminarUsuario.php\" method=\"post\">
                         <input type=\"hidden\" id=\"id\" name=\"id\" value=\"".$row["id"]."\" >
-                        <td><input type=\"submit\" id=\"eliminar\" name=\"eliminar\" value=\"Eliminar\"></td>
+                        <td style=\"border: 1px solid black;\"><input type=\"submit\" id=\"eliminar\" name=\"eliminar\" value=\"Eliminar\"></td>
                         </form>
                     </tr>";
             endforeach;   

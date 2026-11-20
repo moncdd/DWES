@@ -35,6 +35,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["formInsertarUsuario"])
     if(!isset($errorUsuario) && !isset($errorContrasenia) && !isset($errorRol))
     {
         insertarUsuario($usuario,$contrasenia,$rol);
+        header("Location:ConsultarUsuarios.php");
+        exit();
     }
     
 }// request_method
