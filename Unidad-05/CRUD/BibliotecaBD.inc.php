@@ -43,12 +43,20 @@ function insertarUsuario($p_suario,$p_contrasenia,$p_rol)
     cerrarConexion($stmt,$mysqli);
 }
 
-function consultarUsuarios()
+function consultarUsuarios($p_id="")
 {
     $mysqli = crearConexion();
 
-    // Insertamos una tupla en BD
-    $stmt = $mysqli->prepare("SELECT * FROM `usuarios`");
+    if(empty($p_id))
+        // Insertamos una tupla en BD
+        $stmt = $mysqli->prepare("SELECT * FROM `usuarios`");
+    else{
+        // Insertamos una tupla en BD
+        $stmt = $mysqli->prepare("SELECT * FROM `usuarios` WHERE `id` = ?");
+
+        $id = $p_id;
+        $stmt->bind_param("i", $id); 
+    }    
 
     $stmt->execute();
 
