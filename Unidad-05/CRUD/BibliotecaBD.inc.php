@@ -48,18 +48,20 @@ function actualizarUsuario($p_id,$p_usuario,$p_contrasenia,$p_rol)
     $mysqli = crearConexion();
 
     // Consulta preparada, paso 1: preparación
-    $stmt = $mysqli->prepare("UPDATE `usuarios` SET `usuario` = '".$p_usuario."', `contrasenia` = '".$p_contrasenia."', `rol` = '".$p_rol."' WHERE `id` = ?");
+    $stmt = $mysqli->prepare("UPDATE `usuarios` SET `usuario` = ?, `contrasenia` = ?, `rol` = ? WHERE `id` = ?");
 
     // Consulta preparada, paso 2: enlaza los valores y ejecuta la consulta
     $id = $p_id;
+    $usuario = $p_usuario;
+    $contrasenia = $p_contrasenia;
+    $rol = $p_rol;
     
-    $stmt->bind_param("i",$id);  
+    $stmt->bind_param("sssi",$usuario,$contrasenia,$rol,$id);  
 
     $stmt->execute();
 
     cerrarConexion($stmt,$mysqli);
 }
-actualizarUsuario(9,'fsdafg','fasdf','afdsfgas');
 function consultarUsuarios($p_id="")
 {
     $mysqli = crearConexion();

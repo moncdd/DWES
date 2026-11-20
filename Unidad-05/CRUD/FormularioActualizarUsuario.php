@@ -89,7 +89,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["formInsertarUsuario"])
             ?>
             <label for="rol">Rol: </label>
             <input type="text" id="rol" name="rol" value="<?php if(isset($rol)) echo $rol; else echo ""; ?>"><br>
-            <input type="submit" name="formInsertarUsuario" value="Insertar usuario">
+            <input type="submit" name="formInsertarUsuario" value="Actualizar usuario">
         </form>
     </body>
 </html>
