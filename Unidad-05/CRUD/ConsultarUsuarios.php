@@ -20,6 +20,7 @@ $tupla = consultarUsuarios();
                 <th style="border: 1px solid black;">Contraseña</th>
                 <th style="border: 1px solid black;">Rol</th>
                 <th style="border: 1px solid black;">Modificar</th>
+                <th style="border: 1px solid black;">Eliminar</th>
             </tr>
             <!-- "Pintar" las tuplas de base de datos -->
             <?php
@@ -29,6 +30,10 @@ $tupla = consultarUsuarios();
                         <td style=\"border: 1px solid black;\">".$row["contrasenia"]."</td>
                         <td style=\"border: 1px solid black;\">".$row["rol"]."</td>
                         <td style=\"border: 1px solid black;\"><a href=\"FormularioActualizarUsuario.php?id=".$row["id"]."\">Modificar</a></td>
+                        <form action=\"EliminarUsuario.php\" method=\"post\">
+                        <input type=\"hidden\" id=\"id\" name=\"id\" value=\"".$row["id"]."\" >
+                        <td><input type=\"submit\" id=\"eliminar\" name=\"eliminar\" value=\"Eliminar\"></td>
+                        </form>
                     </tr>";
             endforeach;   
             ?>
