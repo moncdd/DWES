@@ -67,7 +67,7 @@ function eliminarUsuario($p_id)
     $mysqli = crearConexion();
 
     // Consulta preparada, paso 1: preparación
-    $stmt = $mysqli->prepare("DELETE FROM `usuarios` WHERE `id` = ?");
+    $stmt = $mysqli->prepare("UPDATE `usuarios` SET `borrado_v` = CURRENT_TIMESTAMP WHERE `id` = ?");
 
     // Consulta preparada, paso 2: enlaza los valores y ejecuta la consulta
     $id = $p_id;
@@ -84,10 +84,10 @@ function consultarUsuarios($p_id="")
 
     if(empty($p_id))
         // Insertamos una tupla en BD
-        $stmt = $mysqli->prepare("SELECT * FROM `usuarios`");
+        $stmt = $mysqli->prepare("SELECT * FROM `usuarios` WHERE `borrado_v` IS NULL");
     else{
         // Insertamos una tupla en BD
-        $stmt = $mysqli->prepare("SELECT * FROM `usuarios` WHERE `id` = ?");
+        $stmt = $mysqli->prepare("SELECT * FROM `usuarios` WHERE `borrado_v` IS NULL AND `id` = ?");
 
         $id = $p_id;
         $stmt->bind_param("i", $id); 
