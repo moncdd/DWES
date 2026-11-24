@@ -1,104 +1,116 @@
 <?php
 
 require_once("DatosConexionBD.inc.php");
-// Funciones de CRUD con Base de datos
 
+/**
+ * Crear conexión PDO
+ */
 function crearConexion()
 {
-    global $host,$username,$password,$dbname;
+    global $host, $username, $password, $dbname;
 
-    // 1. Create database connection
-    $mysqli = new mysqli($host, $username, $password, $dbname);
+    try {
+        $pdo = new PDO(
+            "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+            $username,
+            $password
+        );
 
-    // 2. Check connection
-    if ($mysqli == null) {
-        die("Connection failed ");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_BOTH);
+
+        return $pdo;
+    } catch (PDOException $e) {
+        die("Error de conexión: " . $e->getMessage());
     }
-
-    return $mysqli;
 }
 
-function cerrarConexion($stmt,$mysqli)
+/**
+ * Insertar usuario
+ */
+function insertarUsuario($p_usuario, $p_contrasenia, $p_rol)
 {
-    // 4. Destroy object
-    $stmt->close();
-    $mysqli->close();
+    $pdo = crearConexion();
+
+    $sql = "INSERT INTO usuarios (usuario, contrasenia, rol)
+            VALUES (?, ?, ?)";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        $p_usuario,
+        $p_contrasenia,
+        $p_rol
+    ]);
 }
-function insertarUsuario($p_suario,$p_contrasenia,$p_rol)
+
+/**
+ * Actualizar usuario
+ */
+function actualizarUsuario($p_id, $p_usuario, $p_contrasenia, $p_rol)
 {
-    $mysqli = crearConexion();
+    $pdo = crearConexion();
 
-    // Consulta preparada, paso 1: preparación
-    $stmt = $mysqli->prepare("INSERT INTO `usuarios`(`usuario`, `contrasenia`, `rol`) 
-            VALUES (?,?,?)");
+    $sql = "UPDATE usuarios
+            SET usuario = ?,
+                contrasenia = ?,
+                rol = ?
+            WHERE id = ?";
 
-    // Consulta preparada, paso 2: enlaza los valores y ejecuta la consulta
-    $usuario = $p_suario;
-    $contrasenia = $p_contrasenia;
-    $rol = $p_rol;
-    $stmt->bind_param("sss", $usuario, $contrasenia, $rol); 
+    $stmt = $pdo->prepare($sql);
 
-    $stmt->execute();
-
-    cerrarConexion($stmt,$mysqli);
+    $stmt->execute([
+        $p_usuario,
+        $p_contrasenia,
+        $p_rol,
+        $p_id
+    ]);
 }
 
-function actualizarUsuario($p_id,$p_usuario,$p_contrasenia,$p_rol)
-{
-    $mysqli = crearConexion();
-
-    // Consulta preparada, paso 1: preparación
-    $stmt = $mysqli->prepare("UPDATE `usuarios` SET `usuario` = ?, `contrasenia` = ?, `rol` = ? WHERE `id` = ?");
-
-    // Consulta preparada, paso 2: enlaza los valores y ejecuta la consulta
-    $id = $p_id;
-    $usuario = $p_usuario;
-    $contrasenia = $p_contrasenia;
-    $rol = $p_rol;
-    
-    $stmt->bind_param("sssi",$usuario,$contrasenia,$rol,$id);  
-
-    $stmt->execute();
-
-    cerrarConexion($stmt,$mysqli);
-}
+/**
+ * Borrado lógico
+ */
 function eliminarUsuario($p_id)
 {
-    $mysqli = crearConexion();
+    $pdo = crearConexion();
 
-    // Consulta preparada, paso 1: preparación
-    $stmt = $mysqli->prepare("UPDATE `usuarios` SET `borrado_v` = CURRENT_TIMESTAMP WHERE `id` = ?");
+    $sql = "UPDATE usuarios
+            SET borrado_v = CURRENT_TIMESTAMP
+            WHERE id = ?";
 
-    // Consulta preparada, paso 2: enlaza los valores y ejecuta la consulta
-    $id = $p_id;
-    
-    $stmt->bind_param("i",$id);  
+    $stmt = $pdo->prepare($sql);
 
-    $stmt->execute();
-
-    cerrarConexion($stmt,$mysqli);
+    $stmt->execute([$p_id]);
 }
-function consultarUsuarios($p_id="")
+
+/**
+ * Consultar usuarios
+ */
+function consultarUsuarios($p_id = "")
 {
-    $mysqli = crearConexion();
+    $pdo = crearConexion();
 
-    if(empty($p_id))
-        // Insertamos una tupla en BD
-        $stmt = $mysqli->prepare("SELECT * FROM `usuarios` WHERE `borrado_v` IS NULL");
-    else{
-        // Insertamos una tupla en BD
-        $stmt = $mysqli->prepare("SELECT * FROM `usuarios` WHERE `borrado_v` IS NULL AND `id` = ?");
+    if (empty($p_id)) {
 
-        $id = $p_id;
-        $stmt->bind_param("i", $id); 
-    }    
+        $sql = "SELECT *
+                FROM usuarios
+                WHERE borrado_v IS NULL";
 
-    $stmt->execute();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
 
-    $result = $stmt->get_result();
+    } else {
 
-    cerrarConexion($stmt,$mysqli);
+        $sql = "SELECT *
+                FROM usuarios
+                WHERE borrado_v IS NULL
+                AND id = ?";
 
-    return $result->fetch_all(MYSQLI_BOTH);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$p_id]);
+    }
+
+    return $stmt->fetchAll();
 }
+
 ?>

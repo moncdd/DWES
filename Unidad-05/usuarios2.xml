@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usuarios>
+    <usuario id="1">
+        <nombre>Monnie</nombre>
+        <apellido>Boddie</apellido>
+        <direccion>Calle Pedro Mar 12</direccion>
+        <ciudad>Mexicali</ciudad>
+        <pais>Mexico</pais>
+        <contacto tipo="telefono">44221234</contacto>
+        <contacto tipo="url">http://monnie.ejemplo.com</contacto>
+        <contacto tipo="email">monnie@ejemplo.com</contacto>
+    </usuario>
+</usuarios>
